@@ -1,4 +1,4 @@
-const { add, subtract, multiply, divide } = require('../../calculator');
+const { add, subtract, multiply, divide, modulo, power, squareRoot } = require('../../calculator');
 
 describe('calculator operations', () => {
   describe('addition', () => {
@@ -54,6 +54,48 @@ describe('calculator operations', () => {
 
     test('throws for division by zero', () => {
       expect(() => divide(20, 0)).toThrow('Division by zero');
+    });
+  });
+
+  describe('modulo', () => {
+    test('returns remainder (image example: 5 % 2)', () => {
+      expect(modulo(5, 2)).toBe(1);
+    });
+
+    test('returns zero when divisible', () => {
+      expect(modulo(10, 5)).toBe(0);
+    });
+
+    test('throws for modulo by zero', () => {
+      expect(() => modulo(10, 0)).toThrow('Modulo by zero');
+    });
+  });
+
+  describe('power', () => {
+    test('raises base to exponent (image example: 2 ^ 3)', () => {
+      expect(power(2, 3)).toBe(8);
+    });
+
+    test('returns 1 for exponent 0', () => {
+      expect(power(9, 0)).toBe(1);
+    });
+
+    test('supports negative exponents', () => {
+      expect(power(2, -2)).toBe(0.25);
+    });
+  });
+
+  describe('square root', () => {
+    test('calculates square root (image example: √16)', () => {
+      expect(squareRoot(16)).toBe(4);
+    });
+
+    test('returns 0 for square root of 0', () => {
+      expect(squareRoot(0)).toBe(0);
+    });
+
+    test('throws for negative numbers', () => {
+      expect(() => squareRoot(-16)).toThrow('Cannot calculate square root of a negative number');
     });
   });
 });

@@ -15,7 +15,21 @@ function divide(a, b) {
   return a / b;
 }
 
-module.exports = { add, subtract, multiply, divide };
+function modulo(a, b) {
+  if (b === 0) throw new Error('Modulo by zero');
+  return a % b;
+}
+
+function power(base, exponent) {
+  return base ** exponent;
+}
+
+function squareRoot(n) {
+  if (n < 0) throw new Error('Cannot calculate square root of a negative number');
+  return Math.sqrt(n);
+}
+
+module.exports = { add, subtract, multiply, divide, modulo, power, squareRoot };
 
 // CLI entry point
 if (require.main === module) {
@@ -23,15 +37,21 @@ if (require.main === module) {
   const x = parseFloat(a);
   const y = parseFloat(b);
 
-  const ops = { add, subtract, multiply, divide };
+  const ops = { add, subtract, multiply, divide, modulo, power, squareRoot };
   if (!ops[operation]) {
-    console.error(`Unknown operation: ${operation}. Use: add, subtract, multiply, divide`);
+    console.error(`Unknown operation: ${operation}. Use: add, subtract, multiply, divide, modulo, power, squareRoot`);
     process.exit(1);
   }
 
   try {
-    const result = ops[operation](x, y);
-    console.log(`${operation}(${x}, ${y}) = ${result}`);
+    const isUnary = operation === 'squareRoot';
+    if (Number.isNaN(x) || (!isUnary && Number.isNaN(y))) {
+      console.error(`Invalid input. Usage: ${isUnary ? 'node calculator.js squareRoot <number>' : `node calculator.js ${operation} <number> <number>`}`);
+      process.exit(1);
+    }
+
+    const result = isUnary ? ops[operation](x) : ops[operation](x, y);
+    console.log(isUnary ? `${operation}(${x}) = ${result}` : `${operation}(${x}, ${y}) = ${result}`);
   } catch (err) {
     console.error(err.message);
     process.exit(1);
